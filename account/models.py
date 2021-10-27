@@ -25,7 +25,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email = models.EmailField(primary_key=True)
-    name = models.CharField(max_length=30, blank=True)
+    name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=40, blank=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
@@ -38,6 +38,9 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+
+    def get_username(self):
+        return self.name
 
     def has_module_perms(self, app_label):
         return self.is_staff

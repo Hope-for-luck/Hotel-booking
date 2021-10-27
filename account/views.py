@@ -1,11 +1,14 @@
 from rest_framework.permissions import IsAuthenticated
-from .serializers import RegistrationSerializers, ActivationSerializer, \
+from .serializers import RegistrationSerializers, ActivationSerializer, UserSerializer, \
     LoginSerializer, ChangePasswordSerializer, ForgotPasswordSerializer, ForgotPassCompleteSerializer
+from .models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from .permissions import IsActivePermission
+
+from rest_framework import viewsets, permissions
 
 
 class RegistrationView(APIView):
@@ -71,3 +74,9 @@ class ForgotPassCompleteView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.set_new_password()
             return Response('Пароль успешно обновлён')
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = UserSerializer

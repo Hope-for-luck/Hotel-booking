@@ -167,3 +167,9 @@ class ForgotPassCompleteSerializer(serializers.Serializer):
         user = User.objects.get(email=email)
         user.set_password(password)
         user.save()
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"

@@ -18,6 +18,7 @@ INSTALLED_APPS = [
 
     # installed app
     'account',
+    'hotels',
 
     # libraries,
     'rest_framework',
