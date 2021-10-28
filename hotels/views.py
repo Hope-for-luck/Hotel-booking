@@ -38,11 +38,8 @@ class HotelLikesViewSet(viewsets.ModelViewSet):
 
 class HotelViewSet(viewsets.ModelViewSet):
     queryset = Hotel.objects.all()
-    filter_backends = [
-        filters.DjangoFilterBackend,
-        rest_filters.SearchFilter
-    ]
-    filterset_fields = ['rent', 'name', 'status']
+    filter_backends = [filters.DjangoFilterBackend, rest_filters.SearchFilter]
+    # filterset_fields = ['rent', 'name', 'status']
     search_fields = ['name', 'description']
 
     def get_permissions(self):

@@ -14,13 +14,10 @@ class HotelDetailSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def to_representation(self, instance):
-        representation = super(
-            HotelDetailSerializer, self).to_representation(instance)
+        representation = super(HotelDetailSerializer, self).to_representation(instance)
         representation['reviews'] = HotelReviewSerializer(
-            HotelReview.objects.filter(hotel=instance.id), many=True
-        ).data
-        representation['total_likes'] = HotelLike.objects.filter(
-            hotel=instance.id).count()
+            HotelReview.objects.filter(hotel=instance.id), many=True).data
+        representation['total_likes'] = HotelLike.objects.filter(hotel=instance.id).count()
         return representation
 
 
