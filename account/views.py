@@ -1,13 +1,13 @@
 from rest_framework.permissions import IsAuthenticated
-from .serializers import RegistrationSerializers, ActivationSerializer, UserSerializer, \
-    LoginSerializer, ChangePasswordSerializer, ForgotPasswordSerializer, ForgotPassCompleteSerializer
+from .serializers import RegistrationSerializers, ActivationSerializer, \
+    UserSerializer, ProfileSerializer, LoginSerializer, \
+    ChangePasswordSerializer, ForgotPasswordSerializer, ForgotPassCompleteSerializer
 from .models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from .permissions import IsActivePermission
-
 from rest_framework import viewsets, permissions
 
 
@@ -77,6 +77,22 @@ class ForgotPassCompleteView(APIView):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.filter(is_staff=False)
     permission_classes = [permissions.IsAdminUser]
     serializer_class = UserSerializer
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    def get_queryset(self):
+        return User.objects.filter(email=self.request.user)
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_serializer_context(self):
+        return {
+            "request": self.request
+        }
+
+    def get_serializer(self, *args, **kwargs):
+        kwargs['context'] = self.get_serializer_context()
+        return self.serializer_class(*args, **kwargs)
